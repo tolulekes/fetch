@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,8 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.toluleke.fetchtakehome.R
 import com.toluleke.fetchtakehome.data.responseModels.Items
 import com.toluleke.fetchtakehome.ui.theme.FetchTakeHomeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,6 +56,7 @@ class MainActivity : ComponentActivity() {
                     LazyColumn(
                         contentPadding = innerPadding,
                         modifier = Modifier
+                            .padding(16.dp)
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
@@ -91,11 +95,13 @@ private fun GroupItem(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Grouped By: ")
+        Text(text = stringResource(R.string.grouped_by),
+            style = MaterialTheme.typography.titleLarge)
 
         Text(
             modifier = modifier,
-            text = itemId
+            text = itemId,
+            style = MaterialTheme.typography.titleLarge
         )
     }
     if (expandState) {
@@ -107,6 +113,7 @@ private fun GroupItem(
             onClick = { onItemClick() },
             shape = RoundedCornerShape(15.dp)
         ) {
+            GroupTitle(modifier = modifier.padding(top = 8.dp))
             items.forEach {
                 RowItem(item = it)
             }
@@ -136,6 +143,28 @@ fun RowItem(item: Items, modifier: Modifier = Modifier) {
         Text(text = item.listId)
     }
 }
+
+
+@Composable
+private fun GroupTitle(modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(0.8f)
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(text = stringResource(R.string.id),
+            style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = modifier.weight(1f))
+        Text(text = stringResource(R.string.name),
+            style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = modifier.weight(1f))
+        Text(text = stringResource(R.string.item_id),
+            style = MaterialTheme.typography.titleMedium)
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
